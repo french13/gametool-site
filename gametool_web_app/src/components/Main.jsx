@@ -1,0 +1,23 @@
+import React from 'react'
+import Login from '../pages/Login';
+import Register from '../pages/Register';
+import Todolist from '../pages/Todolist';
+import Timeitem from '../pages/Timeitem';
+import Illust from '../pages/Illust';
+import { Routes,Route } from 'react-router-dom';
+
+const Main = () => {
+  return (
+    <div>
+     <Routes>
+        <Route path='/' element={<Login/>}/>
+        <Route path='/register' element={<Register/>}/>
+        <Route path='/todolist' element={<Todolist/>}/>
+        <Route path='/timeitem' element={<Timeitem/>}/>
+        <Route path='/illust' element={<Illust/>}/>
+     </Routes>
+    </div>
+  )
+}
+
+export default Main

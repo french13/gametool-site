@@ -1,0 +1,53 @@
+$mainColor :  #74ACDF;
+$bgColor : rgb(238, 238, 238);
+
+@mixin flexbox ($justify, $align){
+  display: flex;
+  justify-content: $justify;
+  align-items: $align;
+}
+
+.App {
+  text-align: center;
+  height : 100vh;
+  position: relative;
+  @include flexbox(center, none)
+}
+
+.navbar__container {
+  position : fixed;
+  top : 0;
+  height : 70px;
+  background-color: $bgColor;
+  box-shadow: 1px 1px 10px 3px rgb(196, 196, 196);
+  padding : 0px 20px;
+
+  div{
+    height : 100%;
+    div{
+      font-size: 2.5rem;
+      @include flexbox(center, center)
+    }
+    img {
+      width : 3rem;
+    }
+  }
+
+}
+
+
+.footer__container {
+  height : 70px;
+  position: fixed;
+  bottom : 0;
+  background-color: $bgColor;
+  box-shadow: 1px 1px 10px 3px rgb(196, 196, 196);
+  p {
+    font-size: 1.1rem;
+    margin : 0;
+    margin-top : 5px;
+  }
+  i {
+    font-size: 1.7rem;
+  }
+}
