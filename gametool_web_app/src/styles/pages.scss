@@ -1,0 +1,14 @@
+$mainColor :  #74ACDF;
+$bgColor : rgb(238, 238, 238);
+
+@mixin flexbox ($justify, $align){
+    display: flex;
+    justify-content: $justify;
+    align-items: $align;
+  }
+
+.todolist__container {
+    height : 100vh;
+    padding : 70px 0px;
+    background-color: red;
+}
