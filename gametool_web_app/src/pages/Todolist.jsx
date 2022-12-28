@@ -10,8 +10,9 @@ import {
   collection,
   getDocs,
   onSnapshot,
+  where,
 } from "firebase/firestore";
-import { async } from "@firebase/util";
+
 
 const Todolist = () => {
   const [currentUser, setCurrentUser] = useState('');
@@ -20,17 +21,31 @@ const Todolist = () => {
   const [todo, setTodo] = useState('');
   const [todoList, setTodoList] = useState([]);
 
-useEffect(()=>{
-  onAuthStateChanged(auth, (user) => {
+ useEffect(()=>{
+ onAuthStateChanged(auth,(user) => {
     if (user) {
       setCurrentUser(user.displayName);
-      setCurrentUserEmail(user.email);
       setCurrentUserUid(user.uid);
+      setCurrentUserEmail(user.email);
     }else{
     }
   })
 
-},[])
+
+
+
+  importTodo()
+},[currentUserEmail])
+
+  const importTodo = ()=>{
+    onSnapshot(collection(db, 'todolist', currentUserUid, currentUserUid), (result) => {
+      const box = [];
+      result.forEach((doc) => {
+        box.push(doc.data().todo);
+      });
+      setTodoList(box);
+    })
+  }
 
 
   const submitTodo = async () => {
@@ -43,29 +58,17 @@ useEffect(()=>{
       time: serverTimestamp(),
     });
     // todolist 유저db안에 subcollection 만들어서 todo넣기
-    await setDoc(doc(db, "todolist", currentUserUid, "todos", date), {
+    await setDoc(doc(db, "todolist", currentUserUid, currentUserUid, date), {
       name: currentUser,
       todo: todo,
       time: serverTimestamp(),
     });
-
-
- 
+    
+  
   };
 
-   useCallback(()=>{
-    getDocs(collection(db, "todolist", currentUserUid, "todos")).then(
-      (result) => {
-        const box = [];
-        result.forEach((doc) => {
-          box.push(doc.data().todo);
-        });
-        setTodoList(box);
-      }
-    );
 
-    return;
-  },[])
+
 
 
 
