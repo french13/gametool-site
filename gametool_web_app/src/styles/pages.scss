@@ -9,21 +9,59 @@ $bgColor : rgb(238, 238, 238);
 
 .todolist__container {
   height : 100vh;
-  padding : 70px 20px;
-  background-color: #74ACDF;
+  padding : 70px 50px;
   width : 100%;
+  background-color: rgb(240, 240, 240);
+  
+  .todoAdd {
+    margin-top : 50px;
+    border : solid 3px $mainColor;
+    border-radius : 10px;
+
+    input {
+      border : none;
+    }
+    button {
+      background-color: $mainColor;
+      border : none;
+    }
+  }
 
   .row {
     width : 100%;
+    @include flexbox(center, center);
+    margin : 0px;
+    margin-top : 30px;
 
     .todoItem {
       width : 100%;
       display: flex;
-      margin : 10px 0px ;
-      border : 2px solid black;
-      div {
-        @include flexbox(center, center)
+      background-color: $mainColor;
+      @include flexbox(center, center);
+      padding : 10px;
+      color : white;
+      border-radius: 5px;
+      margin-bottom : 10px;
+
+      button {
+        margin : 0px 3px;
       }
+    }
+  }
+  .updateBox {
+    width : 100%;
+    @include flexbox(center, center);
+    background-color: $mainColor;
+    padding : 10px;
+    border-radius: 10px;
+
+    input {
+      width : 90%;
+    }
+    button {
+      border : solid 2px $mainColor;
+      background-color: $mainColor;
+      margin : 0px 5px;
     }
   }
 

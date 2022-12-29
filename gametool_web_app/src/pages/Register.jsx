@@ -83,6 +83,13 @@ const Register = () => {
       date: serverTimestamp(),
       uid: auth.currentUser.uid,
     });
+
+    await setDoc(doc(db, "todolist", auth.currentUser.uid), {
+      name: userName,
+      uid: auth.currentUser.uid,
+      email: userId,
+      time: serverTimestamp(),
+    });
   };
 
   return (

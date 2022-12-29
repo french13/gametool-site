@@ -1,11 +1,10 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Container,
   Input,
   InputGroup,
   Row,
   Button,
-  Form,
   Col,
 } from "reactstrap";
 import "../styles/pages.scss";
@@ -16,24 +15,22 @@ import {
   doc,
   serverTimestamp,
   collection,
-  getDocs,
   onSnapshot,
-  where,
   deleteDoc,
   getDoc,
   query,
   updateDoc,
 } from "firebase/firestore";
-import { async } from "@firebase/util";
 
 const Todolist = () => {
   const [currentUser, setCurrentUser] = useState("");
   const [currentUserEmail, setCurrentUserEmail] = useState("");
   const [currentUserUid, setCurrentUserUid] = useState("");
   const [todo, setTodo] = useState("");
-  const [todoList, setTodoList] = useState([]);
-  const [updateText, setUpdateText] = useState("");
-  const [updateId, setUpdateId] = useState("");
+  const [todoList, setTodoList] = useState('');
+  const [updateText, setUpdateText] = useState([]);
+  const [updateValue, setUpdateValue] = useState('');
+
   const [updateBox, setUpdateBox] = useState(false);
 
   useEffect(() => {
@@ -63,14 +60,7 @@ const Todolist = () => {
   };
 
   const submitTodo = async () => {
-    const date = String(new Date().getTime());
-    // todolist 유저db 만들기
-    await setDoc(doc(db, "todolist", currentUserUid), {
-      name: currentUser,
-      uid: currentUserUid,
-      email: currentUserEmail,
-      time: serverTimestamp(),
-    });
+    const date = String(new Date().getTime())
 
     // todolist 유저db안에 subcollection 만들어서 todo넣기
     await setDoc(doc(db, "todolist", currentUserUid, currentUserUid, date), {
@@ -80,62 +70,76 @@ const Todolist = () => {
       time: serverTimestamp(),
     });
   };
+
+ 
+
   // todo 수정하기
   const updateTodo = async (e) => {
-    const updateId = String(e.target.value);
-    const data = await getDoc(
-      query(doc(db, "todolist", currentUserUid, currentUserUid, updateId))
-    );
-    if (data.exists()) {
-      setUpdateText(data.data().todo);
-      setUpdateId(data.data().id);
-    }
+    const updateId = e.target.id;
+    await getDoc(doc(db, "todolist", currentUserUid, currentUserUid, e.target.id)).then((data)=>{
+      if (data.exists()) {
+      setUpdateText(data.data());
+      console.log(updateText)
+      }
+    }).catch((error)=>{
+      console.log('fail')
+    })
     setUpdateBox(true);
   };
+
+
   // updateInputText 수정하기
   const updateInput = (e) => {
-    setUpdateText(e.target.value);
+    setUpdateValue(e.target.value);
   };
+
+
   // 수정한 updateInput 제출하기
   const updateTodoItem = async (e) => {
-    const updateKey = e.target.value;
+    const updateKey = String(e.target.id);
     await updateDoc(
-      doc(db, "todolist", currentUserUid, currentUserUid, updateKey),
+      doc(db, "todolist", currentUserUid, currentUserUid, e.target.id),
       {
-        todo: updateText,
+        todo : updateValue,
       }
     );
     setUpdateBox(false);
+    setUpdateValue('')
   };
 
   // todo 삭제하기
   const deleteTodo = async (e) => {
-    const deleteKey = e.target.value;
+    const deleteKey = e.target.id;
     await deleteDoc(
       doc(db, "todolist", currentUserUid, currentUserUid, deleteKey)
     );
   };
 
+  const updateBoxClose = ()=>{
+    setUpdateBox(false);
+  }
+
   console.log("재렌더링중");
 
   return (
     <Container className="todolist__container">
-      <InputGroup>
+      <InputGroup className="todoAdd">
         <Input
           onChange={(e) => {
             setTodo(e.target.value);
           }}
         />
-        <Button onClick={submitTodo}>추가</Button>
+        <Button onClick={submitTodo}><i className="ri-add-line"></i></Button>
       </InputGroup>
-      <Row>
+      <Row >
         {updateBox == true ? (
-          <>
-            <input type="text" value={updateText} onChange={updateInput} />
-            <Button value={updateId} onClick={updateTodoItem}>
-              수정하기
+          <div className="updateBox">
+            <Input type="text" onChange={updateInput} value={updateValue}/>
+            <Button id={updateText.id} onClick={updateTodoItem}>
+            <i id={updateText.id} onClick={updateTodoItem} className="ri-arrow-left-right-line"></i>
             </Button>
-          </>
+            <Button onClick={updateBoxClose}><i onClick={updateBoxClose} className="ri-close-line"></i></Button>
+          </div>
         ) : null}
       </Row>
 
@@ -146,12 +150,12 @@ const Todolist = () => {
               <div className="todoItem" key={i}>
                 <Col xs={10}>{item.todo}</Col>
 
-                <Button value={item.id} onClick={updateTodo}>
-                  <i className="ri-pencil-line"></i>
+                <Button id={item.id} onClick={updateTodo}>
+                <i  id={item.id} onClick={updateTodo} className="ri-pencil-line"></i>
                 </Button>
 
-                <Button value={item.id} onClick={deleteTodo}>
-                  <i className="ri-delete-bin-line"></i>
+                <Button id={item.id} onClick={deleteTodo}>
+                <i  id={item.id} onClick={deleteTodo} className="ri-delete-bin-line"></i>
                 </Button>
               </div>
             );
