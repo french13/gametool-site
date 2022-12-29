@@ -8,7 +8,23 @@ $bgColor : rgb(238, 238, 238);
   }
 
 .todolist__container {
-    height : 100vh;
-    padding : 70px 0px;
+  height : 100vh;
+  padding : 70px 20px;
+  background-color: #74ACDF;
+  width : 100%;
+
+  .row {
+    width : 100%;
+
+    .todoItem {
+      width : 100%;
+      display: flex;
+      margin : 10px 0px ;
+      border : 2px solid black;
+      div {
+        @include flexbox(center, center)
+      }
+    }
+  }
 
 }

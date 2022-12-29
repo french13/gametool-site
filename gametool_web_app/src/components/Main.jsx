@@ -8,7 +8,7 @@ import { Routes,Route } from 'react-router-dom';
 
 const Main = () => {
   return (
-    <div>
+   
      <Routes>
         <Route path='/' element={<Login/>}/>
         <Route path='/register' element={<Register/>}/>
@@ -16,7 +16,7 @@ const Main = () => {
         <Route path='/timeitem' element={<Timeitem/>}/>
         <Route path='/illust' element={<Illust/>}/>
      </Routes>
-    </div>
+ 
   )
 }
 
