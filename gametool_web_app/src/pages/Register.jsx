@@ -90,6 +90,20 @@ const Register = () => {
       email: userId,
       time: serverTimestamp(),
     });
+
+    await setDoc(doc(db, "timeitem", auth.currentUser.uid), {
+      name: userName,
+      uid: auth.currentUser.uid,
+      email: userId,
+      time: serverTimestamp(),
+    });
+
+    await setDoc(doc(db, "myillust", auth.currentUser.uid), {
+      name: userName,
+      uid: auth.currentUser.uid,
+      email: userId,
+      time: serverTimestamp(),
+    });
   };
 
   return (
