@@ -106,3 +106,32 @@ $bgColor : rgb(238, 238, 238);
 .false {
     color : red;
 }
+
+@media (max-width : 760px) {
+    .login__container {
+        height : 100vh;
+        padding : 70px 0px;
+        @include flexbox(center, center);
+    
+        div {
+            width : 70vw;
+            height : 70%;
+  
+    }
+}
+}
+    
+    .register__container {
+  
+        div {
+            width : 70vw;
+            height : 75%;
+    
+    }
+    
+  }
+  
+  @media (max-width : 550px) {
+
+  }
+  

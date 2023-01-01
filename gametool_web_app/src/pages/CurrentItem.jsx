@@ -30,11 +30,15 @@ const CurrentItem = ({ currentItemBox }) => {
         currentItemBox.map((item, i) => {
           return (
             <Row className="item" key={i}>
-              <Col xs="8">{item.itemName}</Col>
-              <Col xs="2">D-{dDay(item.dDay)}</Col>
+              <Col xs="7">{item.itemName}</Col>
+              <Col xs="3">D-{dDay(item.dDay)}</Col>
               <Col xs="2">
                 <button onClick={deleteTodo} id={item.id}>
-                  삭제
+                  <i
+                    onClick={deleteTodo}
+                    id={item.id}
+                    className="ri-delete-bin-line"
+                  ></i>
                 </button>
               </Col>
             </Row>

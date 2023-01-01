@@ -1,34 +1,44 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Container, Row, Input, Button, Col } from "reactstrap";
 import "../styles/pages.scss";
 import OverdueItem from "./OverdueItem";
 import CurrentItem from "./CurrentItem";
 import { auth,db } from "../firebase";
 import { serverTimestamp, setDoc, doc, onSnapshot, collection } from "firebase/firestore";
+import { onAuthStateChanged } from "firebase/auth";
 
 const Timeitem = () => {
   const [itemBox, setItemBox] = useState(true);
   const [currentItemBox, setCurrentItemBox]= useState();
   const [overdueItemBox, setOverdueItemBox]= useState();
+  const [leftBt, setLeftBt] = useState('on')
+  const [rightBt, setRightBt] = useState('')
 
+ 
 
   useEffect(()=>{
-   onSnapshot(collection(db, "timeitem", auth.currentUser.uid, auth.currentUser.uid),
-      (result) => {
-        const current = [];
-        const overdue = [];
-        result.forEach((doc) => {
-          const today = new Date().getTime();
-          if(Number(doc.data().dDay)-today > 0 ){
-            current.push(doc.data())
-          }else{
-            overdue.push(doc.data())
-          }
-        });
-        setCurrentItemBox(current);
-        setOverdueItemBox(overdue);
+
+    onAuthStateChanged(auth, (user)=>{
+      if(user){
+        onSnapshot(collection(db, "timeitem", auth.currentUser.uid, auth.currentUser.uid),
+        (result) => {
+          const current = [];
+          const overdue = [];
+          result.forEach((doc) => {
+            const today = new Date().getTime();
+            if(Number(doc.data().dDay)-today > 0 ){
+              current.push(doc.data())
+            }else{
+              overdue.push(doc.data())
+            }
+          });
+          setCurrentItemBox(current);
+          setOverdueItemBox(overdue);
+        }
+      );
       }
-    );
+    })
+
 
     return
   },[])
@@ -48,6 +58,15 @@ const Timeitem = () => {
     // const Day = (Math.floor(dDay / (1000*60*60*24)))+1;
   }
 
+    const clickEffect = ()=>{
+      setLeftBt('on')
+      setRightBt('')
+    }
+    const clickEffect2 = ()=>{
+   
+      setLeftBt('')
+      setRightBt('on')
+    }
   return (
     <Container className="timeitem__container">
       <Row className="addItem">
@@ -60,15 +79,19 @@ const Timeitem = () => {
       </Row>
       <Row className="changeItemContainer">
         <Col xs="6">
-          <Button
+          <Button id={leftBt}
+          
             onClick={() => {
-              setItemBox(true);}}>
+              setItemBox(true);
+              clickEffect()}}>
             currentItem
           </Button>
         </Col>
         <Col xs="6">
-          <Button
-            onClick={() => {setItemBox(false);}}>
+          <Button id={rightBt}
+         
+            onClick={() => {setItemBox(false);
+              clickEffect2()}}>
             overdueItme
           </Button>
         </Col>

@@ -27,3 +27,7 @@
     * todolist 컴포넌트의 중복작동되는 useState제거 후 해결 완료
   
   - illust 컴포넌트에서 input으로 데이터를 가져올시 처음에 검색하면 데이터를 가져오지 못하는 현상 발견
+
+#### 2023-01-01
+   - 새로고침시 currentUser의 uid를 가져오지 못하는현상 발견
+    * firbase.json에  "rewrites": [{"source": "**","destination": "/index.html"}] 추가 후 해결

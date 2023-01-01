@@ -8,10 +8,8 @@ $bgColor : rgb(238, 238, 238);
   }
 
 .todolist__container {
-  height : 100vh;
   padding : 70px 50px;
   width : 100%;
-  background-color: rgb(240, 240, 240);
   
   .todoAdd {
     margin-top : 50px;
@@ -45,6 +43,9 @@ $bgColor : rgb(238, 238, 238);
 
       button {
         margin : 0px 5px;
+        font-size: 0.8rem;
+        border : none;
+        border-radius: 5px;
       }
     }
   }
@@ -149,7 +150,7 @@ $bgColor : rgb(238, 238, 238);
 }
 
 .illust__input {
-  margin-top: 30px;
+  margin-top: 20px;
   border : solid 3px $mainColor;
 }
 
@@ -160,7 +161,7 @@ $bgColor : rgb(238, 238, 238);
 }
 
 .illustResult__container {
-  height : 40%;
+  height : 35%;
   overflow-y: auto;
   margin-top: 10px;
   border : solid 3px $mainColor;
@@ -178,6 +179,10 @@ $bgColor : rgb(238, 238, 238);
 
     span {
       width : 30%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+
     }
 
     button {
@@ -190,7 +195,7 @@ $bgColor : rgb(238, 238, 238);
 }
 
 .myillust__container {
-  height : 40%;
+  height : 35%;
   overflow-y: auto;
   margin-top: 10px;
   border : solid 3px $mainColor;
@@ -208,6 +213,10 @@ $bgColor : rgb(238, 238, 238);
 
     span {
       width : 30%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+
     }
 
     button {
@@ -217,4 +226,35 @@ $bgColor : rgb(238, 238, 238);
       border-radius: 5px;
     }
   }
+}
+
+#on {
+  background-color: grey;
+  color : white;
+}
+
+
+@media (max-width : 760px) {
+  .illustResult__container {
+    font-size: 0.8rem;
+  }
+  .myillust__container {
+    font-size: 0.8rem;
+  }
+  
+}
+
+@media (max-width : 550px) {
+  .timeitem__container{
+    font-size: 0.7rem;
+  }
+
+  .illustResult__container {
+    font-size: 0.7rem;
+  }
+
+  .myillust__container {
+    font-size: 0.5rem;
+  }
+  
 }

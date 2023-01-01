@@ -35,7 +35,7 @@ const IllustResult = ({ illustBox }) => {
               <span>{item.name}</span>
               <span>{item.location}</span>
               <span>{item.abillity}</span>
-              <button onClick={addMyIllust}>추가</button>
+              <button onClick={addMyIllust}>+</button>
             </div>
           );
         })}

@@ -9,7 +9,6 @@ $bgColor : rgb(238, 238, 238);
 
 .App {
   text-align: center;
-  height : 100vh;
   position: relative;
   @include flexbox(center, none)
 }
@@ -18,9 +17,10 @@ $bgColor : rgb(238, 238, 238);
   position : fixed;
   top : 0;
   height : 70px;
-  background-color: $bgColor;
   box-shadow: 1px 1px 10px 3px rgb(196, 196, 196);
   padding : 0px 20px;
+  z-index: 100;
+  background-color: $bgColor;
 
   div{
     height : 100%;
@@ -50,3 +50,18 @@ $bgColor : rgb(238, 238, 238);
     font-size: 1.7rem;
   }
 }
+
+@media (max-width : 420px) {
+  .footer__container {
+
+    p {
+      font-size: 0.8rem;
+      margin : 0;
+      margin-top : 5px;
+    }
+    i {
+      font-size: 1.5rem;
+    }
+  }
+}
+ 

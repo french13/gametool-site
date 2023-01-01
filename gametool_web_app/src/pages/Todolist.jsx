@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Container, Input, InputGroup, Row, Button, Col } from "reactstrap";
 import "../styles/pages.scss";
 import { auth, db } from "../firebase";
@@ -24,23 +24,26 @@ const Todolist = () => {
 
   const [updateBox, setUpdateBox] = useState(false);
 
-  useEffect(() => {
 
-    importTodo();
+
+  useEffect(() => {
+  onAuthStateChanged(auth, (user)=>{
+    if(user){
+   
+        onSnapshot(
+          collection(db, "todolist", auth.currentUser.uid, auth.currentUser.uid),
+          (result) => {
+            const box = [];
+            result.forEach((doc) => {
+              box.push(doc.data());
+            });
+            setTodoList(box);
+          }
+        );
+    }
+  })
   }, []);
 
-  const importTodo = () => {
-    onSnapshot(
-      collection(db, "todolist", auth.currentUser.uid, auth.currentUser.uid),
-      (result) => {
-        const box = [];
-        result.forEach((doc) => {
-          box.push(doc.data());
-        });
-        setTodoList(box);
-      }
-    );
-  };
 
   const submitTodo = async () => {
     const date = String(new Date().getTime());
@@ -138,21 +141,21 @@ const Todolist = () => {
               <div className="todoItem" key={i}>
                 <Col xs={9}>{item.todo}</Col>
 
-                <Button id={item.id} onClick={updateTodo}>
+                <button id={item.id} onClick={updateTodo}>
                   <i
                     id={item.id}
                     onClick={updateTodo}
                     className="ri-pencil-line"
                   ></i>
-                </Button>
+                </button>
 
-                <Button id={item.id} onClick={deleteTodo}>
+                <button id={item.id} onClick={deleteTodo}>
                   <i
                     id={item.id}
                     onClick={deleteTodo}
                     className="ri-delete-bin-line"
                   ></i>
-                </Button>
+                </button>
               </div>
             );
           })}

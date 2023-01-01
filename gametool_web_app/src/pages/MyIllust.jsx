@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { auth, db } from '../firebase';
 import { onSnapshot, collection, doc, deleteDoc } from 'firebase/firestore';
+import { onAuthStateChanged } from 'firebase/auth';
 
 const MyIllust = () => {
     const [myIllust, setMyIllust] = useState();
 
 
     useEffect(()=>{
+
+      onAuthStateChanged(auth, (user)=>{
         onSnapshot(collection(db, "myillust", auth.currentUser.uid, auth.currentUser.uid),
         (result) => {
             let box =[]
@@ -18,14 +21,21 @@ const MyIllust = () => {
       );
       console.log('db에서 myillust로 도감 넣기')
       return;
+      })
+
     },[])
     
 
     const deleteMyIllust = (e) => {
-        const deleteKey = e.target.id;
-        deleteDoc(
-          doc(db, "myillust", auth.currentUser.uid, auth.currentUser.uid, deleteKey)
-        );
+      onAuthStateChanged(auth, (user)=>{
+        if(user){
+          const deleteKey = e.target.id;
+          deleteDoc(
+            doc(db, "myillust", auth.currentUser.uid, auth.currentUser.uid, deleteKey)
+          );
+        }
+      })
+     
 
       };
 
@@ -38,7 +48,12 @@ const MyIllust = () => {
               <span>{item.name}</span>
               <span>{item.location}</span>
               <span>{item.abillity}</span>
-              <button id={item.id} onClick={deleteMyIllust}>삭제</button>
+              <button id={item.id} onClick={deleteMyIllust}>
+              <i
+                   id={item.id} onClick={deleteMyIllust}
+                    className="ri-delete-bin-line"
+                  ></i>
+              </button>
             </div>
           );
         })}
