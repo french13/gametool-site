@@ -25,8 +25,10 @@ const Timeitem = () => {
           const current = [];
           const overdue = [];
           result.forEach((doc) => {
-            const today = new Date().getTime();
-            if(Number(doc.data().dDay)-today > 0 ){
+            const today = new Date()
+            let today2 = new Date(today.setDate(today.getDate()-1))
+
+            if(Number(doc.data().dDay)-today2 > 0 ){
               current.push(doc.data())
             }else{
               overdue.push(doc.data())

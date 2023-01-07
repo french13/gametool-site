@@ -18,6 +18,7 @@
   - timeitem 기간제 아이템 기능 완성
 
 #### 2022-12-31
+
   - illust(도감)기능 완성
 
   - illust 추가 클릭시 느리게 추가된 현상을 발견
@@ -31,3 +32,6 @@
 #### 2023-01-01
    - 새로고침시 currentUser의 uid를 가져오지 못하는현상 발견
     * firbase.json에  "rewrites": [{"source": "**","destination": "/index.html"}] 추가 후 해결
+
+#### 2023-01-07
+  - timeItem에서 d-0일시 overdue 칸으로 이동을 해서 new Date() 설정시 -1 일을 줘서 해결
