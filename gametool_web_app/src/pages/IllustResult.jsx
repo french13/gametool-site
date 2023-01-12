@@ -5,9 +5,6 @@ import { auth, db } from "../firebase";
 
 const IllustResult = ({ illustBox }) => {
 
-
-
-    
     const addMyIllust = async(e) =>{
         const date = String(new Date().getTime());
         const name = e.target.previousSibling.previousSibling.previousSibling.innerText

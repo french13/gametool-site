@@ -7,17 +7,13 @@ $bgColor : rgb(238, 238, 238);
     align-items: $align;
   }
   
-
 .login__container {
     height : 100vh;
     padding : 70px 0px;
     @include flexbox(center, center);
-
     div {
         width : 40vw;
-        height : 70%;
-  
-        
+        height : 70%;   
         form {
             height : 100%;
             @include flexbox(space-around, center);
@@ -33,7 +29,6 @@ $bgColor : rgb(238, 238, 238);
                 border-radius: 0;
                 font-size: 1.5rem;
             }
-
             button {
                 width : 100%;
                 height: 13%;
@@ -43,39 +38,31 @@ $bgColor : rgb(238, 238, 238);
             }
         }
     }
-
     a {
         text-decoration: none;
         color : $mainColor;
     }
 }
-
 .register__container {
     height : 100vh;
     padding : 70px 0px;
     @include flexbox(center, center);
-
     div {
         width : 40vw;
-        height : 75%;
-        
+        height : 75%;     
         form {
             height : 100%;
             @include flexbox(space-around, center);
-            flex-direction: column;
-            
-            
+            flex-direction: column;     
             p {
                 font-size: 3rem;
                 font-weight: 900;
-            }
-            
+            }           
             label {
                 width : 100%;
                 text-align: left;
                 padding-left : 1.5%;
             }
-
             input {
                 height : 11%;
                 border : none;
@@ -85,7 +72,6 @@ $bgColor : rgb(238, 238, 238);
                 font-size: 1.1rem;
                 outline-style: none;
             }
-
             button {
                 width : 100%;
                 height: 13%;
@@ -96,17 +82,13 @@ $bgColor : rgb(238, 238, 238);
             }
         }
     }
-
 }
-
 .true {
     color : rgb(59, 59, 255);
 }
-
 .false {
     color : red;
 }
-
 @media (max-width : 760px) {
     .login__container {
         height : 100vh;
@@ -120,17 +102,12 @@ $bgColor : rgb(238, 238, 238);
     }
 }
 }
-    
-    .register__container {
-  
+.register__container {
         div {
             width : 70vw;
             height : 75%;
-    
     }
-    
   }
-  
   @media (max-width : 550px) {
 
   }
