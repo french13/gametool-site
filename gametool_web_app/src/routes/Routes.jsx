@@ -6,9 +6,8 @@ import Timeitem from '../pages/Timeitem';
 import Illust from '../pages/Illust';
 import { Routes,Route } from 'react-router-dom';
 
-const Main = () => {
+const RoutesContainer = () => {
   return (
-   
      <Routes>
         <Route path='/' element={<Login/>}/>
         <Route path='/register' element={<Register/>}/>
@@ -16,8 +15,7 @@ const Main = () => {
         <Route path='/timeitem' element={<Timeitem/>}/>
         <Route path='/illust' element={<Illust/>}/>
      </Routes>
- 
   )
 }
 
-export default Main
+export default RoutesContainer

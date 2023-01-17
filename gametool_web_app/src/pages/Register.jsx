@@ -1,177 +1,188 @@
 import React, { useEffect, useState } from "react";
 import "../styles/loginRegister.scss";
-import { Container, Row, Form, Input, Button, Label } from "reactstrap";
+import { Container, Row, Button, Form, InputGroup } from "react-bootstrap";
 import { auth, db } from "../firebase";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { doc, serverTimestamp, setDoc } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  getDocs,
+  onSnapshot,
+  serverTimestamp,
+  setDoc,
+} from "firebase/firestore";
+import { getUserDoc } from "../apis/apis";
+import { MdOutlineDone } from "react-icons/md";
+import styled from "styled-components";
+
+const TrueSpan = styled.span`
+  color: green;
+`;
+const FalseSpan = styled.span`
+  color: red;
+`;
 
 const Register = () => {
-  const [id, setId] = useState(false);
-  const [pw, setPw] = useState(false);
-  const [pwConfirm, setPwConfirm] = useState(false);
+  // email, password
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [idCheckButton, setIdCheckButton] = useState(false);
+
+  // email, password, passwordConfirm (text)
+  const [idVaildText, setIdVaildText] = useState(false);
+  const [passwordVaildText, setPasswordVaildText] = useState(false);
+  const [passwordConfirmText, setPasswordConfirmText] = useState(false);
+
   const [signupButton, setSignupButton] = useState(true);
 
-  const [userId, setUserId] = useState("");
-  const [userPw, setUserPw] = useState("");
-  const [userName, setUserName] = useState("");
+  // 정규식
+  const idVaild =
+    /^(([^<>()\[\].,;:\s@"]+(\.[^<>()\[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
+  const passwordVaild = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-8]).{8,25}$/;
 
-  // id 유효성 체크
-  const idCheck = (e) => {
-    console.log("id");
-    const idValueCheck =
-      /^(([^<>()\[\].,;:\s@"]+(\.[^<>()\[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
-    const idValue = idValueCheck.test(e.target.value);
-    setUserId(e.target.value);
-
-    if (idValue) {
-      setId(true);
-    } else {
-      setId(false);
-    }
+  // id input value 넣기 와 유효성 검사
+  const idInput = async (e) => {
+    setIdCheckButton(false)
+    setEmail(e.target.value);
+    setIdVaildText(idVaild.test(e.target.value));
   };
-  // pw 유효성 체크
-  const pwCheck = (e) => {
-    console.log("pw");
-    const pwValueCheck = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-8]).{8,25}$/;
-    const pwValue = pwValueCheck.test(e.target.value);
-    setUserPw(e.target.value);
-
-    if (pwValue) {
-      setPw(true);
-    } else {
-      setPw(false);
-    }
+  // password input value 넣기 와 유효성 검사
+  const passwordInput = (e) => {
+    setPassword(e.target.value);
+    setPasswordVaildText(passwordVaild.test(e.target.value));
   };
-  // pw 일치하는지 체크
-  const pwCheckConfirm = (e) => {
-    const pwConfirmValue = userPw == e.target.value;
-
-    if (pwConfirmValue) {
-      setPwConfirm(true);
-    } else {
-      setPwConfirm(false);
-    }
+  //  비밀번호 재확인 체크
+  const passwordConfirmInput = (e) => {
+    setPasswordConfirmText(password == e.target.value);
   };
 
   // id, pw, pw확인 유효성 모두 통과했을경우 회원가입 버튼 활성화
   useEffect(() => {
-    if (id == true && pw == true && pwConfirm == true) {
+    if (
+      idVaildText &&
+      passwordVaildText &&
+      passwordConfirmText &&
+      idCheckButton
+    ) {
       setSignupButton(false);
     } else {
       setSignupButton(true);
     }
-  }, [id, pw, pwConfirm]);
+  }, [email, password, passwordConfirmText, idCheckButton]);
 
   // 회원가입
   const register = async () => {
-    await createUserWithEmailAndPassword(auth, userId, userPw)
+    await createUserWithEmailAndPassword(auth, email, password)
       .then((result) => {
-        console.log(result.user)
+        console.log(result.user);
         alert("가입성공");
       })
       .catch((error) => {
         alert(error.message);
       });
-    await updateProfile(auth.currentUser, { displayName: userName })
+    await updateProfile(auth.currentUser, { displayName: email })
       .then(() => {})
       .catch((error) => {
         alert(error.message);
       });
     await setDoc(doc(db, "users", auth.currentUser.uid), {
-      name: userName,
-      email: userId,
+      email: email,
       date: serverTimestamp(),
       uid: auth.currentUser.uid,
     });
-
     await setDoc(doc(db, "todolist", auth.currentUser.uid), {
-      name: userName,
       uid: auth.currentUser.uid,
-      email: userId,
+      email: email,
       time: serverTimestamp(),
     });
-
     await setDoc(doc(db, "timeitem", auth.currentUser.uid), {
-      name: userName,
       uid: auth.currentUser.uid,
-      email: userId,
+      email: email,
       time: serverTimestamp(),
     });
-
     await setDoc(doc(db, "myillust", auth.currentUser.uid), {
-      name: userName,
       uid: auth.currentUser.uid,
-      email: userId,
+      email: email,
       time: serverTimestamp(),
+    });
+  };
+  // 아이디 중복확인
+  const idCheck = async () => {
+    setIdCheckButton(true);
+    const FetchId = await getDocs(getUserDoc("users", "email", email));
+    FetchId.forEach((doc) => {
+      if (doc.exists()) {
+        alert("존재하는 아이디입니다.");
+        setIdCheckButton(false);
+      }
     });
   };
 
   return (
-    <Container className="register__container">
+    <Container className="registerContainer">
+      <header>Sign Up</header>
       <Row>
-        <Form>
-          <p>Sign Up</p>
-          <Input
-            onChange={(e) => {
-              setUserName(e.target.value);
-            }}
-            type="text"
-            id="name"
-            name="userId"
-            placeholder="이름"
-            required
-          />
-          <Label></Label>
-
-          <Input
-            onChange={idCheck}
-            type="email"
-            id="email"
-            name="userId"
-            placeholder="이메일"
-          />
-          <Label>
-            {id == true ? (
-              <span className="true">올바른 아이디입니다</span>
+        <Form className="registerForm" onSubmit={register}>
+          {/* email Input */}
+          <InputGroup>
+            <Form.Control
+              onChange={idInput}
+              type="email"
+              name="userId"
+              placeholder="이메일"
+            />
+            <Button disabled={!idVaildText} onClick={idCheck}>
+              {idCheckButton === true ? <MdOutlineDone /> : "중복확인"}
+            </Button>
+          </InputGroup>
+          <Form.Label>
+            {idVaildText == true ? (
+              <TrueSpan>올바른 이메일 형식입니다</TrueSpan>
             ) : (
-              <span className="false">아이디를 확인해주세요(이메일 형식)</span>
-            )}
-          </Label>
-
-          <Input
-            onChange={pwCheck}
-            type="password"
-            id="password"
-            name="userPassword"
-            placeholder="비밀번호"
-          />
-          <Label>
-            {pw == true ? (
-              <span className="true">올바른 비밀번호입니다</span>
-            ) : (
-              <span className="false">
-                잘못된 비밀번호형식입니다.(영문+숫자+특수문자 8글자이상
-                25글자이하)
+              <span>
+                <FalseSpan>이메일 형식이 아닙니다.</FalseSpan>
               </span>
             )}
-          </Label>
-
-          <Input
-            onChange={pwCheckConfirm}
-            type="password"
-            id="passwordCheck"
-            name="passwordCheck"
-            placeholder="비밀번호 확인"
-          />
-          <Label>
-            {pwConfirm == true ? (
-              <span className="true">비밀번호가 일치합니다</span>
+          </Form.Label>
+          {/* password Input */}
+          <InputGroup>
+            <Form.Control
+              onChange={passwordInput}
+              type="password"
+              name="userPassword"
+              placeholder="비밀번호 (영문+숫자+특수문자 8글자이상 25글자이하)"
+            />
+          </InputGroup>
+          <Form.Label>
+            {passwordVaildText == true ? (
+              <TrueSpan>올바른 비밀번호입니다</TrueSpan>
             ) : (
-              <span className="false">비밀번호가 일치하지 않습니다</span>
+              <FalseSpan>잘못된 비밀번호형식입니다.</FalseSpan>
             )}
-          </Label>
+          </Form.Label>
 
-          <Button onClick={register} disabled={signupButton}>
+          {/* passwordConfirm Input */}
+
+          <InputGroup>
+            <Form.Control
+              onChange={passwordConfirmInput}
+              type="password"
+              name="passwordCheck"
+              placeholder="비밀번호 확인"
+            />
+          </InputGroup>
+          <Form.Label>
+            {passwordConfirmText == true ? (
+              <TrueSpan>비밀번호가 일치합니다</TrueSpan>
+            ) : (
+              <FalseSpan>비밀번호가 일치하지 않습니다</FalseSpan>
+            )}
+          </Form.Label>
+          <Button
+            onClick={register}
+            className="registerButton"
+            disabled={signupButton}
+          >
             회원가입
           </Button>
         </Form>
