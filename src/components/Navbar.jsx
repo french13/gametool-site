@@ -1,47 +1,67 @@
-import React, { useEffect, useState } from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import logo from "../images/logo.png";
-import { auth } from "../firebase";
-import { signOut, onAuthStateChanged } from "firebase/auth";
+import React from "react";
+import { Container, Row, Col } from "reactstrap";
 import { useNavigate } from "react-router-dom";
-import { IoIosArrowBack } from "react-icons/io";
-import { BiLogOutCircle } from "react-icons/bi";
+import { signOut } from "firebase/auth";
+import { auth } from "../firebase";
+import {BsCardList} from "react-icons/bs"
+import {AiOutlineClockCircle} from "react-icons/ai"
+import {GiMonsterGrasp} from "react-icons/gi"
+import {FiLogOut} from "react-icons/fi"
 
-const Navbar = () => {
+const Navbar = ({setOnMenu}) => {
   const navigate = useNavigate();
 
-  const [isLogin, setIsLogin] = useState(false);
-
-  // 로그인정보가 있으면 todolist 없으면 로그인창으로 이동
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        navigate("/todolist");
-        setIsLogin(true);
-      } else {
-        navigate("/");
-        setIsLogin(false);
-      }
-    });
-  }, []);
-
   return (
-    <Container className="navbar__container">
-      <Row className="d-flex align-items-center fs-1">
-        <Col xs="1">{isLogin === true ? <IoIosArrowBack/> : null}</Col>
-        <Col xs="10">
-          <img src={logo} alt="" width={40} />
+    <Container id="navbar__container">
+      <Row>
+        <Col xs={4}>
+        <BsCardList/>
         </Col>
-        <Col xs="1">
-          {isLogin === true ? (
-            <BiLogOutCircle
-              onClick={() => {
-                signOut(auth).then(() => {
-                  console.log("로그아웃");
-                });
-              }}
-            />
-          ) : null}
+        <Col xs={8}
+          onClick={() => {
+            navigate("/todolist"); setOnMenu(false)
+          }}
+        >
+          todo
+        </Col>
+      </Row>
+      <Row>
+      <Col xs={4}>
+      <AiOutlineClockCircle />
+        </Col>
+        <Col xs={8}
+          onClick={() => {
+            navigate("/timeitem"); setOnMenu(false)
+          }}
+        >
+          time
+        </Col>
+      </Row>
+      <Row>
+      <Col xs={4}>
+      <GiMonsterGrasp />
+        </Col>
+        <Col xs={8}
+          onClick={() => {
+            navigate("/illust"); setOnMenu(false)
+          }}
+        >
+          illust
+        </Col>
+      </Row>
+      <Row className="logoutButton">
+      <Col xs={4}>
+      <FiLogOut />
+      </Col>
+        <Col  xs={8}
+          onClick={() => {
+            signOut(auth).then(() => {
+              console.log("로그아웃");
+              setOnMenu(false);
+            });
+          }}
+        >
+          Logout
         </Col>
       </Row>
     </Container>

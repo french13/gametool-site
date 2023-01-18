@@ -27,23 +27,23 @@ const TodoCard = ({ item, i }) => {
   };
 
   return (
-    <Card style={{ padding: "5px", border: "none" }}>
+    <Card style={{ border: "none" }}>
       <CardBody className="todoCard">
         {updateForm === false ? (
-          <CardTitle>{item.todoTitle}</CardTitle>
+          <CardTitle>{item.title}</CardTitle>
         ) : (
           <Input
-            defaultValue={item.todoTitle}
+            defaultValue={item.title}
             onChange={(e) => {
               setUpdateTitle(e.target.value);
             }}
           />
         )}
         {updateForm === false ? (
-          <CardText>{item.todoContent}</CardText>
+          <CardText>{item.content}</CardText>
         ) : (
           <Input
-            defaultValue={item.todoContent}
+            defaultValue={item.content}
             onChange={(e) => {
               setUpdateContent(e.target.value);
             }}
@@ -54,8 +54,8 @@ const TodoCard = ({ item, i }) => {
             id={item.id}
             onClick={() => {
               setUpdateForm(true);
-              setUpdateTitle(item.todoTitle);
-              setUpdateContent(item.todoContent);
+              setUpdateTitle(item.title);
+              setUpdateContent(item.content);
             }}
           >
             수정

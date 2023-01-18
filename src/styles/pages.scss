@@ -1,3 +1,7 @@
+$mainColor :  #74ACDF;
+$bgColor : rgb(238, 238, 238);
+
+
 @mixin flexbox ($justify, $align){
     display: flex;
     justify-content: $justify;
@@ -6,6 +10,39 @@
 
 .todoContainer {
   position : relative;
+  padding: 0;
+
+  .todoHeader {
+    position: relative;
+    height: 100px;
+    background-color: lightgrey;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    width: 100%;
+    padding: 7%;
+    
+    p {
+      font-size: 2rem;
+      color: $mainColor;
+      font-weight: 900;
+    }
+
+    .addButton {
+      z-index: 40;
+      position : absolute;
+      bottom : 10%;
+      right : 5%;
+      width : 20%;
+      background-color: $mainColor;
+      border : none;
+    }
+
+    .addButton:hover {
+      background-color: grey;
+      color : $mainColor;
+      }
+  }
 
   .todoAddForm {
     position : absolute;
@@ -16,7 +53,7 @@
     background-color: white;
     box-shadow: 0 0 0 1000px rgba(0,0,0,0.7);
     border-radius: 10px;
-    z-index: 1;
+    z-index: 50;
 
     input {
       margin-bottom: 10px;
@@ -40,5 +77,6 @@
 }
 
 .todoCard {
-  border : solid 1px grey;
+  border : solid 1px rgb(51, 44, 44);
+  margin : 20px;
 }

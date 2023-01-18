@@ -166,7 +166,6 @@ const Register = () => {
             )}
           </Form.Label>
           <Button
-            type="submit"
             onClick={register}
             className="registerButton"
             disabled={signupButton}

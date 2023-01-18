@@ -27,14 +27,14 @@ const setCollectionDoc = (collectionName, userUid, value) => {
 };
 
 // subCollection에 데이터 추가하기
-const setSubCollectionDoc = (collectionName, userUid, name, todoTitle, todoContent) => {
+const setSubCollectionDoc = (collectionName, userUid, name, title, content) => {
   const id = String(new Date().getTime());
 
   return setDoc(doc(db, collectionName, userUid, userUid, id), {
     id: id,
     name: name,
-    todoTitle: todoTitle,
-    todoContent : todoContent,
+    title: title,
+    content : content,                                            
     time: serverTimestamp(),
   });
 };
@@ -51,8 +51,8 @@ const deleteSubCollectionDoc = (collectionName, userUid, id) => {
 const updateSubCollectionDoc = (collectionName, userUid, id, updateTitle, updateContent)=>{
    return updateDoc(doc(db,collectionName, userUid, userUid , id),
    {
-     todoTitle: updateTitle,
-     todoContent: updateContent,
+     title: updateTitle,
+     content: updateContent,
    }
  );
 }

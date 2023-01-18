@@ -9,11 +9,13 @@ import {
 } from "react-bootstrap";
 import { auth } from "../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
+
+  const navigate = useNavigate()
 
   // 회원가입 버튼 활성화
   const [signinButton, setSigninButton] = useState(true);
@@ -33,6 +35,7 @@ const Login = () => {
     signInWithEmailAndPassword(auth, id, password)
       .then((result) => {
         alert("login성공");
+        navigate('/todolist')
       })
       .catch((error) => {
         alert("login실패");

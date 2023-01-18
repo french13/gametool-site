@@ -1,13 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Container,
-  Input,
-  InputGroup,
-  Row,
-  Button,
-  Col,
-  FormGroup,
-} from "reactstrap";
+import { Container, Input, Row, Button, FormGroup } from "reactstrap";
 import "../styles/pages.scss";
 import { auth, db } from "../firebase";
 import { onAuthStateChanged } from "firebase/auth";
@@ -59,14 +51,13 @@ const Todolist = () => {
 
   return (
     <Container className="todoContainer">
-      <header>To Do List</header>
-      <Button
-        onClick={() => {
-          setTodoFormActive(true);
-        }}
-      >
-        +
-      </Button>
+      <div className="todoHeader">
+        <p>To Do List</p>
+        <Button        onClick={() => {
+            setTodoFormActive(true);
+          }} className="addButton">+</Button>
+      </div>
+
       {todoFormActive === true ? (
         <FormGroup className="todoAddForm">
           <Button
@@ -98,10 +89,10 @@ const Todolist = () => {
         </FormGroup>
       ) : null}
 
-      <Row xs={1} md={2} lg={4}>
+      <Row xs={1} md={1} lg={2}>
         {todoList &&
           todoList.map((item, i) => {
-            return <TodoCard key={i} item={item} i={i}/>;
+            return <TodoCard key={i} item={item} i={i} />;
           })}
       </Row>
     </Container>

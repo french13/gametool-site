@@ -2,8 +2,8 @@ import React, { useCallback, useState } from 'react'
 import { Container, Row, Col, Input } from 'reactstrap'
 import { onSnapshot, collection, where, query } from 'firebase/firestore'
 import { auth, db } from '../firebase'
-import IllustResult from './IllustResult'
-import MyIllust from './MyIllust'
+import IllustResultBox from '../components/IllustResultBox'
+import MyIllustBox from '../components/MyIllustBox'
 
 const Illust = () => {
   const [illustBox, setIllustBox] =useState()
@@ -63,8 +63,8 @@ const Illust = () => {
           <option value="ULV4001">ULv 4001 - 5000</option>
         </select>
       </Row>
-      <IllustResult illustBox={illustBox}/>
-      <MyIllust/>
+      <IllustResultBox illustBox={illustBox}/>
+      <MyIllustBox/>
     </Container>
   )
 }
