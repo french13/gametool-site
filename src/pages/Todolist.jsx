@@ -1,37 +1,36 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { Container, Input, InputGroup, Row, Button, Col } from "reactstrap";
+import React, { useEffect, useState } from "react";
+import {
+  Container,
+  Input,
+  InputGroup,
+  Row,
+  Button,
+  Col,
+  FormGroup,
+} from "reactstrap";
 import "../styles/pages.scss";
 import { auth, db } from "../firebase";
 import { onAuthStateChanged } from "firebase/auth";
-import {
-  setDoc,
-  doc,
-  serverTimestamp,
-  collection,
-  onSnapshot,
-  deleteDoc,
-  getDoc,
-  query,
-  updateDoc,
-} from "firebase/firestore";
-
+import { collection, onSnapshot } from "firebase/firestore";
+import { setSubCollectionDoc } from "../apis/apis";
+import TodoCard from "../components/TodoCard";
 const Todolist = () => {
-
-  const [todo, setTodo] = useState("");
+  const [todoTitle, setTodoTitle] = useState("");
+  const [todoContent, setTodoContent] = useState("");
   const [todoList, setTodoList] = useState("");
-  const [updateText, setUpdateText] = useState([]);
-  const [updateValue, setUpdateValue] = useState("");
 
-  const [updateBox, setUpdateBox] = useState(false);
-
-
+  const [todoFormActive, setTodoFormActive] = useState(false);
 
   useEffect(() => {
-  onAuthStateChanged(auth, (user)=>{
-    if(user){
-   
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
         onSnapshot(
-          collection(db, "todolist", auth.currentUser.uid, auth.currentUser.uid),
+          collection(
+            db,
+            "todolist",
+            auth.currentUser.uid,
+            auth.currentUser.uid
+          ),
           (result) => {
             const box = [];
             result.forEach((doc) => {
@@ -40,124 +39,69 @@ const Todolist = () => {
             setTodoList(box);
           }
         );
-    }
-  })
+      }
+    });
   }, []);
 
-
+  // todo추가하기
   const submitTodo = async () => {
-    const date = String(new Date().getTime());
-
-    // todolist 유저db안에 subcollection 만들어서 todo넣기
-    await setDoc(doc(db, "todolist", auth.currentUser.uid, auth.currentUser.uid, date), {
-      id: date,
-      name: auth.currentUser.displayName,
-      todo: todo,
-      time: serverTimestamp(),
-    });
-  };
-
-  // todo 수정하기
-  const updateTodo = async (e) => {
-    await getDoc(
-      doc(db, "todolist", auth.currentUser.uid, auth.currentUser.uid, e.target.id)
-    )
-      .then((data) => {
-        if (data.exists()) {
-          setUpdateText(data.data());
-        }
-      })
-      .catch((error) => {
-        console.log("fail");
-      });
-    setUpdateBox(true);
-  };
-
-  // updateInputText 수정하기
-  const updateInput = (e) => {
-    setUpdateValue(e.target.value);
-  };
-
-  // 수정한 updateInput 제출하기
-  const updateTodoItem = async (e) => {
-    await updateDoc(
-      doc(db, "todolist", auth.currentUser.uid, auth.currentUser.uid, e.target.id),
-      {
-        todo: updateValue,
-      }
+    await setSubCollectionDoc(
+      "todolist",
+      auth.currentUser.uid,
+      auth.currentUser.email,
+      todoTitle,
+      todoContent
     );
-    setUpdateBox(false);
-    setUpdateValue("");
-  };
-
-  // todo 삭제하기
-  const deleteTodo = async (e) => {
-    const deleteKey = e.target.id;
-    await deleteDoc(
-      doc(db, "todolist", auth.currentUser.uid, auth.currentUser.uid, deleteKey)
-    );
-  };
-
-  const updateBoxClose = () => {
-    setUpdateBox(false);
+    setTodoFormActive(false);
   };
 
   console.log("재렌더링중");
 
   return (
-    <Container className="todolist__container">
-      <InputGroup className="todoAdd">
-        <Input
-          onChange={(e) => {
-            setTodo(e.target.value);
-          }}
-        />
-        <Button onClick={submitTodo}>
-          <i className="ri-add-line"></i>
-        </Button>
-      </InputGroup>
-      <Row>
-        {updateBox == true ? (
-          <div className="updateBox">
-            <Input type="text" onChange={updateInput} value={updateValue} />
-            <Button id={updateText.id} onClick={updateTodoItem}>
-              <i
-                id={updateText.id}
-                onClick={updateTodoItem}
-                className="ri-arrow-left-right-line"
-              ></i>
-            </Button>
-            <Button onClick={updateBoxClose}>
-              <i onClick={updateBoxClose} className="ri-close-line"></i>
-            </Button>
-          </div>
-        ) : null}
-      </Row>
+    <Container className="todoContainer">
+      <header>To Do List</header>
+      <Button
+        onClick={() => {
+          setTodoFormActive(true);
+        }}
+      >
+        +
+      </Button>
+      {todoFormActive === true ? (
+        <FormGroup className="todoAddForm">
+          <Button
+            onClick={() => {
+              setTodoFormActive(false);
+            }}
+            className="closeButton"
+          >
+            x
+          </Button>
+          <Input
+            value={todoTitle}
+            type="text"
+            onChange={(e) => {
+              setTodoTitle(e.target.value);
+            }}
+          />
+          <Input
+            value={todoContent}
+            type="textarea"
+            style={{ height: "200px" }}
+            onChange={(e) => {
+              setTodoContent(e.target.value);
+            }}
+          />
+          <Button className="addTodoButton" onClick={submitTodo}>
+            추가
+          </Button>
+        </FormGroup>
+      ) : null}
 
-      <Row>
+      <Row xs={1} md={2} lg={4}>
         {todoList &&
           todoList.map((item, i) => {
-            return (
-              <div className="todoItem" key={i}>
-                <Col xs={9}>{item.todo}</Col>
-
-                <button id={item.id} onClick={updateTodo}>
-                  <i
-                    id={item.id}
-                    onClick={updateTodo}
-                    className="ri-pencil-line"
-                  ></i>
-                </button>
-
-                <button id={item.id} onClick={deleteTodo}>
-                  <i
-                    id={item.id}
-                    onClick={deleteTodo}
-                    className="ri-delete-bin-line"
-                  ></i>
-                </button>
-              </div>
-            );
+            return <TodoCard key={i} item={item} i={i}/>;
           })}
       </Row>
     </Container>

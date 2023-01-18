@@ -1,19 +1,16 @@
 import React, { useEffect, useState } from "react";
 import "../styles/loginRegister.scss";
 import { Container, Row, Button, Form, InputGroup } from "react-bootstrap";
-import { auth, db } from "../firebase";
+import { auth } from "../firebase";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import {
-  doc,
-  getDoc,
   getDocs,
-  onSnapshot,
-  serverTimestamp,
-  setDoc,
 } from "firebase/firestore";
-import { getUserDoc } from "../apis/apis";
+import { getUserDoc, setCollectionDoc } from "../apis/apis";
 import { MdOutlineDone } from "react-icons/md";
 import styled from "styled-components";
+import { IoIosArrowBack } from "react-icons/io";
+import { useNavigate } from "react-router-dom";
 
 const TrueSpan = styled.span`
   color: green;
@@ -33,7 +30,10 @@ const Register = () => {
   const [passwordVaildText, setPasswordVaildText] = useState(false);
   const [passwordConfirmText, setPasswordConfirmText] = useState(false);
 
+  // 회원가입 버튼 활성화
   const [signupButton, setSignupButton] = useState(true);
+
+  const navigate = useNavigate()
 
   // 정규식
   const idVaild =
@@ -53,7 +53,7 @@ const Register = () => {
   };
   //  비밀번호 재확인 체크
   const passwordConfirmInput = (e) => {
-    setPasswordConfirmText(password == e.target.value);
+    setPasswordConfirmText(password === e.target.value);
   };
 
   // id, pw, pw확인 유효성 모두 통과했을경우 회원가입 버튼 활성화
@@ -85,26 +85,12 @@ const Register = () => {
       .catch((error) => {
         alert(error.message);
       });
-    await setDoc(doc(db, "users", auth.currentUser.uid), {
-      email: email,
-      date: serverTimestamp(),
-      uid: auth.currentUser.uid,
-    });
-    await setDoc(doc(db, "todolist", auth.currentUser.uid), {
-      uid: auth.currentUser.uid,
-      email: email,
-      time: serverTimestamp(),
-    });
-    await setDoc(doc(db, "timeitem", auth.currentUser.uid), {
-      uid: auth.currentUser.uid,
-      email: email,
-      time: serverTimestamp(),
-    });
-    await setDoc(doc(db, "myillust", auth.currentUser.uid), {
-      uid: auth.currentUser.uid,
-      email: email,
-      time: serverTimestamp(),
-    });
+
+    // 회원가입시 유저의 기본 db 문서 설치 [users, todolist, timeitem, myillust]
+    await setCollectionDoc("users", auth.currentUser.uid, email);
+    await setCollectionDoc("todolist", auth.currentUser.uid, email);
+    await setCollectionDoc("timeitem", auth.currentUser.uid, email);
+    await setCollectionDoc("myillust", auth.currentUser.uid, email);
   };
   // 아이디 중복확인
   const idCheck = async () => {
@@ -120,6 +106,7 @@ const Register = () => {
 
   return (
     <Container className="registerContainer">
+      <IoIosArrowBack onClick={()=>{navigate(-1)}} className="backButton"/>
       <header>Sign Up</header>
       <Row>
         <Form className="registerForm" onSubmit={register}>
@@ -136,7 +123,7 @@ const Register = () => {
             </Button>
           </InputGroup>
           <Form.Label>
-            {idVaildText == true ? (
+            {idVaildText === true ? (
               <TrueSpan>올바른 이메일 형식입니다</TrueSpan>
             ) : (
               <span>
@@ -154,7 +141,7 @@ const Register = () => {
             />
           </InputGroup>
           <Form.Label>
-            {passwordVaildText == true ? (
+            {passwordVaildText === true ? (
               <TrueSpan>올바른 비밀번호입니다</TrueSpan>
             ) : (
               <FalseSpan>잘못된 비밀번호형식입니다.</FalseSpan>
@@ -172,13 +159,14 @@ const Register = () => {
             />
           </InputGroup>
           <Form.Label>
-            {passwordConfirmText == true ? (
+            {passwordConfirmText === true ? (
               <TrueSpan>비밀번호가 일치합니다</TrueSpan>
             ) : (
               <FalseSpan>비밀번호가 일치하지 않습니다</FalseSpan>
             )}
           </Form.Label>
           <Button
+            type="submit"
             onClick={register}
             className="registerButton"
             disabled={signupButton}
