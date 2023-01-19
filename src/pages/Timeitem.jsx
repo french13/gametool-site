@@ -4,18 +4,18 @@ import "../styles/pages.scss";
 import OverdueItem from "../components/OverdueItem";
 import CurrentItem from "../components/CurrentItem";
 import { auth, db } from "../firebase";
-import {
-  onSnapshot,
-  collection,
-} from "firebase/firestore";
+import { onSnapshot, collection } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import { setSubCollectionDoc } from "../apis/apis";
 const Timeitem = () => {
   const [itemTitle, setItemTitle] = useState("");
   const [itemTime, setItemTime] = useState("");
-  const [itemBox, setItemBox] = useState(true);
   const [currentItemBox, setCurrentItemBox] = useState();
   const [overdueItemBox, setOverdueItemBox] = useState();
+
+  const containerRef = useRef(null);
+  const currentRef = useRef(null)
+  const overdueRef = useRef(null)
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -61,51 +61,69 @@ const Timeitem = () => {
       dDayTime
     );
   };
+
+  const overItemTransition = () => {
+    containerRef.current.className = "overItemTranslate";
+    currentRef.current.className="offTimeItemBox"
+    overdueRef.current.className= "onTimeItemBox"
+  };
+
+  const currentItemTranstition = () => {
+    containerRef.current.className = "currentItemTranslate";
+    currentRef.current.className= "onTimeItemBox"
+    overdueRef.current.className= "offTimeItemBox"
+  };
   return (
     <Container className="timeitem__container">
+      <header>Time Item</header>
       <Row className="addItem">
-        <form>
+        <Col xs={7}>
           <Input
             type="text"
             onChange={(e) => {
               setItemTitle(e.target.value);
             }}
           />
+        </Col>
+        <Col xs={5}>
           <Input
             type="date"
             onChange={(e) => {
               setItemTime(e.target.value);
             }}
           />
-          <br />
-          <Button onClick={submitItem}>추가</Button>
-        </form>
+        </Col>
       </Row>
+      <Row>
+        <Col>
+          <Button onClick={submitItem}>추가</Button>
+        </Col>
+      </Row>
+
       <Row className="changeItemContainer">
         <Col xs="6">
-          <Button
-            onClick={() => {
-              setItemBox(true);
-            }}
-          >
+          <button ref={currentRef} className="onTimeItemBox" onClick={currentItemTranstition}>
             currentItem
-          </Button>
+            </button>
         </Col>
         <Col xs="6">
-          <Button
-            onClick={() => {
-              setItemBox(false);
-            }}
-          >
-            overdueItme
-          </Button>
+          <button ref={overdueRef} className="offTimeItemBox" onClick={overItemTransition}>
+            overdueItem
+            </button>
         </Col>
       </Row>
-      {itemBox == true ? (
-        <CurrentItem currentItemBox={currentItemBox} />
-      ) : (
-        <OverdueItem overdueItemBox={overdueItemBox} />
-      )}
+      <div style={{ overflow: "hidden" }}>
+        <div ref={containerRef}>
+          <Row xs={2} style={{ width: "200%" }}>
+            <Col>
+              <CurrentItem currentItemBox={currentItemBox} />
+            </Col>
+            <Col>
+              <OverdueItem overdueItemBox={overdueItemBox} />
+            </Col>
+          </Row>
+        </div>
+      </div>
     </Container>
   );
 };

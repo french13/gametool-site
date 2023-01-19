@@ -1,18 +1,26 @@
 import { configureStore, createSlice } from "@reduxjs/toolkit";
+import { Action } from "@reduxjs/toolkit";
 
 
 
 
 
 
-const currentUser = createSlice({
-    name : 'currentUser',
-    initialState :  '',
+const illustQuantity = createSlice({
+    name : "illustQuantity",
+    initialState :  0,
+    reducers : {
+        renderQuantity(state, action){
+           return state = action.payload
+        },
+        addIllust(state, action){
+            return state = state+action.payload
+        }
+    }
 })
 
 
-
-
+export let {renderQuantity, addIllust} = illustQuantity.actions
 
 
 
@@ -20,6 +28,6 @@ const currentUser = createSlice({
 
 export default configureStore({
     reducer : {
-        currentUser : currentUser.reducer,
+        illustQuantity : illustQuantity.reducer,
     }
 })

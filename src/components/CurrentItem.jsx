@@ -2,6 +2,7 @@ import React from "react";
 import { Container, Row, Col } from "reactstrap";
 import { auth } from "../firebase";
 import { deleteSubCollectionDoc } from "../apis/apis";
+import { BsFillTrashFill } from "react-icons/bs";
 
 const CurrentItem = ({ currentItemBox }) => {
   const dDay = (day) => {
@@ -11,12 +12,12 @@ const CurrentItem = ({ currentItemBox }) => {
     return Day;
   };
 
-  const deleteTimeItem = async(e) =>{
-    await deleteSubCollectionDoc("timeitem", auth.currentUser.uid, e.target.id)
-  }
+  const deleteTimeItem = async (e) => {
+    await deleteSubCollectionDoc("timeitem", auth.currentUser.uid, e.target.id);
+  };
 
   return (
-    <Container className="currentItem__container">
+    <Container className="timeItem">
       {currentItemBox &&
         currentItemBox.map((item, i) => {
           return (
@@ -25,7 +26,7 @@ const CurrentItem = ({ currentItemBox }) => {
               <Col xs="3">D-{dDay(item.content)}</Col>
               <Col xs="2">
                 <button onClick={deleteTimeItem} id={item.id}>
-
+                <BsFillTrashFill/>
                 </button>
               </Col>
             </Row>

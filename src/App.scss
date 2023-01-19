@@ -7,15 +7,18 @@ $bgColor : rgb(238, 238, 238);
   align-items: $align;
 }
 
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Open+Sans:wght@300&display=swap');
+
 .App {
   text-align: center;
+  font-family: 'Open Sans', sans-serif;
 }
 
 #navbar__container {
   position : absolute;
   left : 0;
   top : 0;
-  width : 35%;
+  width : 47%;
   height: 100vh;
   z-index: 100;
   padding-top: 50px;
@@ -61,6 +64,12 @@ $bgColor : rgb(238, 238, 238);
       height: 100%;
       @include flexbox(center, center);
       font-size: 1.8rem;
+    }
+
+    .col:hover {
+      cursor: pointer;
+      background-color: grey;
+      color : white;
     }
   }
 }

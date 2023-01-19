@@ -55,7 +55,7 @@ const Todolist = () => {
         <p>To Do List</p>
         <Button        onClick={() => {
             setTodoFormActive(true);
-          }} className="addButton">+</Button>
+          }} className="addButton">추가</Button>
       </div>
 
       {todoFormActive === true ? (

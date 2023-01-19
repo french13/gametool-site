@@ -77,6 +77,314 @@ $bgColor : rgb(238, 238, 238);
 }
 
 .todoCard {
-  border : solid 1px rgb(51, 44, 44);
+  border : none;
   margin : 20px;
+  background-color: rgb(250, 250, 250);
+  border-radius: 0 40px 0 0;
+  box-shadow: 1px 1px 5px 2px rgb(212, 212, 212);
+  position: relative;
+  border-left : solid 4px $mainColor;
+  transition : all 0.2s;
+
+  .deleteConfirmBox{
+    position: absolute;
+    left : 0;
+    top : 0;
+    width : 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.8);
+    border-radius: 0 40px 0 0;
+    @include flexbox(center, center);
+    flex-direction: column;
+
+    p {
+      font-size: 1.5rem;
+      color : white;
+    }
+
+    button {
+      margin : 0px 5%;
+    }
+  }
+
+  .card-title {
+    text-align: left;
+    font-size: 1.3rem;
+    font-weight: 900;
+  }
+
+  .card-text {
+    text-align: left;
+    color : grey;
+  }
+
+  button {
+    background: none;
+    border: none;
+    font-size: 1.3rem;
+    color: gray;
+  }
 }
+
+.todoCard:hover {
+  scale: 1.02;
+  transform: translateX(10px);
+}
+
+
+.timeitem__container {
+  padding : 0px 10%;
+  header {
+    width : 100%;
+    height: 70px;
+    @include flexbox(center, center);
+    font-size: 1.5rem;
+    color : $mainColor;
+    font-weight: 700;
+    border-bottom : solid 1px $mainColor; 
+  }
+  .row {
+    margin-top: 20px;
+
+      input {
+        border : solid 2px $mainColor;
+      }
+  }
+  button {
+    padding : 10px;
+    background-color: $mainColor;
+    border : none;
+    width : 100%;
+    font-weight: 700;
+    border-radius : 10px;
+  }
+}
+
+.onTimeItemBox {
+  background-color: $mainColor;
+  border : none;
+  width : 100%;
+  font-weight: 700;
+  color : white;
+}
+
+.offTimeItemBox {
+  scale : 0.7;
+  background-color : white;
+  color : white;
+}
+
+.timeItem {
+  text-align: left;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: $mainColor;
+
+  .row {
+    padding : 10px;
+    background-color: rgb(241, 241, 241);
+    border-radius: 5px;
+  }
+
+  button {
+    color : $mainColor;
+    background : none;
+  }
+
+  .overItem {
+    color : grey;
+  }
+}
+
+.item:hover {
+  scale: 1.02;
+}
+
+.overItemTranslate {
+  transition: all 0.2s;
+  transform: translateX(-100%);
+}
+
+.currentItemTranslate {
+  transition: all 0.2s;
+  transform: translateX(0%);
+}
+
+.illust__container {
+  padding : 0px 10%;
+
+  header {
+    width : 100%;
+    height: 70px;
+    @include flexbox(center, center);
+    font-size: 1.5rem;
+    color : $mainColor;
+    font-weight: 700;
+    border-bottom : solid 2px $mainColor;
+    position : relative;
+
+    button {
+      position: absolute;
+      right : 1%;
+      bottom : 2%;
+      font-size: 0.7rem;
+      background-color: $mainColor;
+      color : white;
+      border : none;
+    }
+  }
+
+  .row {
+    margin-top: 20px;
+
+    input {
+      border : solid 2px $mainColor;
+      border-radius: 5px;
+    }
+
+    select {
+      border : solid 2px $mainColor;
+      border-radius: 5px;
+    }
+  }
+}
+
+.illustResult__container {
+  padding-bottom: 80px;
+
+  .row {
+    border : solid 2px $mainColor;
+    margin-top : 10px;
+    padding : 5px;
+    color : $mainColor;
+    font-size: 0.8rem;
+    border-radius: 10px;
+    font-weight: 700;
+    transition : all 0.2s
+    
+  div {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+   }
+
+   button {
+    border : solid 2px $mainColor;
+    border-radius: 50px;
+    background-color: white;
+    color : $mainColor;
+    font-weight: 900;
+   }
+
+   button:hover {
+    background-color: $mainColor;
+    color : white;
+   }
+  }
+
+  .row:hover {
+    scale : 1.05
+  }
+}
+
+.illustBox {
+  position : relative;
+  transition: all 1s;
+  transform-style : preserve-3d;
+}
+
+
+.illustResult__container {
+  position: absolute;
+  backface-visibility: hidden;
+}
+
+.myillust__container {
+  position: absolute;
+  backface-visibility: hidden;
+  transform: rotateY(180deg);
+  background-color: rgb(247, 247, 247);
+  border : solid 2px $mainColor;
+  border-radius: 10px;
+  margin-top : 20px;
+  font-size: 0.8rem;
+
+  .row {
+    border : none;
+    border-radius: 10px;
+    background-color: $mainColor;
+    color : white;
+    margin : 10px 0px;
+    padding : 0px 5px;
+
+    div {
+      padding: 0;
+      @include flexbox(center, center);
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  }
+
+  .myillust__detailButton {
+    background : none;
+    border: none;
+  }
+  .myillust__deleteButton {
+    background : none;
+    border: none;
+  }
+
+  .row:hover {
+    scale : 1.02
+  }
+
+  .card {
+    position : absolute;
+    top : 20px;
+    width : 90%;
+    left : 5%;
+    z-index: 100;
+
+    .card-body {
+      height: 200px;
+      @include flexbox(space-around, center);
+      flex-direction: column;
+      box-shadow: 1px 1px 1px 1000px rgba(0,0,0,0.7);
+
+      button {
+        background-color: $mainColor;
+        color : white;
+        border : none;
+      }
+    }
+  }
+}
+
+.myillustButton {
+  position : relative;
+}
+
+.myillustQuantity {
+  position : absolute;
+  right : -10px;
+  top : -10px;
+  background-color: red;
+  padding : 2px;
+  font-size: 1rem;
+  border-radius: 50px;
+  width : 25px;
+  height: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.rotateOn {
+  transform: rotateY(180deg);
+}
+
+.rotateReset {
+  transform: rotateY(0deg);
+}
+

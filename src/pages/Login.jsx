@@ -10,6 +10,7 @@ import {
 import { auth } from "../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { Link, Navigate, useNavigate } from "react-router-dom";
+import logo from '../images/logo.png'
 
 const Login = () => {
   const [id, setId] = useState("");
@@ -47,7 +48,8 @@ const Login = () => {
     <Container className="loginContainer">
       <Row>
         <Form onSubmit={login}>
-          <header>Login</header>
+          <header><img src={logo} alt="" height={40}/>
+            Game Tool</header>
           <InputGroup>
             <Form.Control
               onChange={(e) => {

@@ -7,9 +7,12 @@ import {BsCardList} from "react-icons/bs"
 import {AiOutlineClockCircle} from "react-icons/ai"
 import {GiMonsterGrasp} from "react-icons/gi"
 import {FiLogOut} from "react-icons/fi"
+import { useSelector } from "react-redux";
 
 const Navbar = ({setOnMenu}) => {
   const navigate = useNavigate();
+  let illustQuantity = useSelector((state)=>{return state.illustQuantity})
+
 
   return (
     <Container id="navbar__container">
@@ -46,7 +49,8 @@ const Navbar = ({setOnMenu}) => {
             navigate("/illust"); setOnMenu(false)
           }}
         >
-          illust
+         <span>illust</span> 
+         <span style={{marginLeft : "30%", color : "red", fontWeight: "900"}}>{illustQuantity}</span>
         </Col>
       </Row>
       <Row className="logoutButton">

@@ -8,6 +8,7 @@ import { Routes, Route } from "react-router-dom";
 import { Container } from "reactstrap";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import IllustDetail from "../components/IllustDetail";
 
 const RoutesContainer = () => {
   const [onMenu, setOnMenu] = useState(false);
@@ -21,6 +22,7 @@ const RoutesContainer = () => {
         <Route path="/todolist" element={<Todolist />} />
         <Route path="/timeitem" element={<Timeitem />} />
         <Route path="/illust" element={<Illust />} />
+
       </Routes>
       <Footer onMenu={onMenu} setOnMenu={setOnMenu} />
     </Container>
