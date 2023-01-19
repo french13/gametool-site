@@ -24,9 +24,9 @@ const CurrentItem = ({ currentItemBox }) => {
             <Row className="item" key={i}>
               <Col xs="7">{item.title}</Col>
               <Col xs="3">D-{dDay(item.content)}</Col>
-              <Col xs="2">
+              <Col xs="2" onClick={deleteTimeItem} id={item.id}>
                 <button onClick={deleteTimeItem} id={item.id}>
-                <BsFillTrashFill/>
+                <BsFillTrashFill />
                 </button>
               </Col>
             </Row>

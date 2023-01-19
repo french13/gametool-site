@@ -91,6 +91,8 @@ const Register = () => {
     await setCollectionDoc("todolist", auth.currentUser.uid, email);
     await setCollectionDoc("timeitem", auth.currentUser.uid, email);
     await setCollectionDoc("myillust", auth.currentUser.uid, email);
+
+    navigate('/')
   };
   // 아이디 중복확인
   const idCheck = async () => {

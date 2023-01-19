@@ -59,7 +59,9 @@ const Timeitem = () => {
       auth.currentUser.email,
       itemTitle,
       dDayTime
-    );
+    ).then(()=>{
+      alert('추가 완료')
+    })
   };
 
   const overItemTransition = () => {

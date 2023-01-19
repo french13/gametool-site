@@ -145,7 +145,6 @@ $bgColor : rgb(238, 238, 238);
   }
   .row {
     margin-top: 20px;
-
       input {
         border : solid 2px $mainColor;
       }
@@ -184,6 +183,12 @@ $bgColor : rgb(238, 238, 238);
     padding : 10px;
     background-color: rgb(241, 241, 241);
     border-radius: 5px;
+
+    div {
+      display: flex;
+      justify-content: left;
+      align-items: center;
+    }
   }
 
   button {
