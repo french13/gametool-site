@@ -76,6 +76,7 @@ const Register = () => {
       .then((result) => {
         console.log(result.user);
         alert("가입성공");
+        navigate('/')
       })
       .catch((error) => {
         alert(error.message);
@@ -92,7 +93,7 @@ const Register = () => {
     await setCollectionDoc("timeitem", auth.currentUser.uid, email);
     await setCollectionDoc("myillust", auth.currentUser.uid, email);
 
-    navigate('/')
+
   };
   // 아이디 중복확인
   const idCheck = async () => {

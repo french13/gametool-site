@@ -29,7 +29,6 @@ const setCollectionDoc = (collectionName, userUid, value) => {
 // subCollection에 데이터 추가하기
 const setSubCollectionDoc = (collectionName, userUid, name, title, content) => {
   const id = String(new Date().getTime());
-
   return setDoc(doc(db, collectionName, userUid, userUid, id), {
     id: id,
     name: name,
@@ -38,15 +37,12 @@ const setSubCollectionDoc = (collectionName, userUid, name, title, content) => {
     time: serverTimestamp(),
   });
 };
-
 // subCollection에 있는 Doc(item) 삭제하기
 const deleteSubCollectionDoc = (collectionName, userUid, id) => {
   return deleteDoc(
     doc(db, collectionName, userUid, userUid, id)
   );
 };
-
-
 // subCollection에 있는 Doc 수정하기
 const updateSubCollectionDoc = (collectionName, userUid, id, updateTitle, updateContent)=>{
    return updateDoc(doc(db,collectionName, userUid, userUid , id),
