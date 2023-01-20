@@ -8,7 +8,8 @@
 ##### 2023-01-19 유지 관리를 위해 리팩토링
 
 배포 : https://labuff-8c713.web.app/
-(테스트용 계정 : id : test@gmail.com / password : !asdf1234)
+
+(테스트용 계정  id : test@gmail.com / password : !asdf1234)
 
 
 #### :grey_exclamation: 느낀점
