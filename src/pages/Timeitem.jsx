@@ -19,13 +19,8 @@ const Timeitem = () => {
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
-      if (user) {
-        onSnapshot(
-          collection(
-            db,
-            "timeitem",
-            auth.currentUser.uid,
-            auth.currentUser.uid
+      if (user) { onSnapshot(
+        collection( db, "timeitem", auth.currentUser.uid,auth.currentUser.uid
           ),
           (result) => {
             const current = [];
@@ -46,7 +41,6 @@ const Timeitem = () => {
         );
       }
     });
-
     return;
   }, []);
 

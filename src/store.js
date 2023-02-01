@@ -18,8 +18,6 @@ const illustQuantity = createSlice({
         }
     }
 })
-
-
 export let {renderQuantity, addIllust} = illustQuantity.actions
 
 

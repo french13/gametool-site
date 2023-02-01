@@ -16,7 +16,7 @@ const TodoCard = ({ item, i }) => {
   // todo 삭제하기
   const deleteTodo = async (itemId) => {
     await deleteSubCollectionDoc("todolist", auth.currentUser.uid, itemId);
-    setDeleteConfirm(false)
+    setDeleteConfirm(false);
   };
 
   // 수정한 updateInput 제출하기
@@ -39,57 +39,50 @@ const TodoCard = ({ item, i }) => {
           <div className="deleteConfirmBox">
             <p>삭제하시겠습니까?</p>
             <div>
-              <button onClick={()=>{ deleteTodo(item.id);}}>삭제</button>
-              <button onClick={()=>{setDeleteConfirm(false)}}>취소</button>
+              <button
+                onClick={() => {
+                  deleteTodo(item.id);
+                }}
+              >
+                삭제
+              </button>
+              <button
+                onClick={() => {
+                  setDeleteConfirm(false);
+                }}
+              >
+                취소
+              </button>
             </div>
           </div>
         ) : null}
         {updateForm === false ? (
-          <CardTitle>{item.title}</CardTitle>
+          <>
+            <CardTitle>{item.title}</CardTitle>
+            <CardText>{item.content}</CardText>
+            <Button id={item.id} onClick={() => {
+                setUpdateForm(true);
+                setUpdateTitle(item.title);
+                setUpdateContent(item.content);}}>
+              <BsFillPencilFill />
+            </Button>
+          </>
         ) : (
-          <Input
-            defaultValue={item.title}
-            onChange={(e) => {
-              setUpdateTitle(e.target.value);
-            }}
-          />
+          <>
+            <Input defaultValue={item.title} onChange={(e) => 
+            {setUpdateTitle(e.target.value);}}/>
+            <Input style={{ marginTop: "5px" }} defaultValue={item.content} onChange={(e) => {
+                setUpdateContent(e.target.value);}}/>
+            <Button id={item.id} onClick={() => {
+                updateTodo(item.id);}} >
+              <BsCheckLg />
+            </Button>
+          </>
         )}
-        {updateForm === false ? (
-          <CardText>{item.content}</CardText>
-        ) : (
-          <Input style={{marginTop : "5px"}}
-            defaultValue={item.content}
-            onChange={(e) => {
-              setUpdateContent(e.target.value);
-            }}
-          />
-        )}
-        {updateForm === false ? (
-          <Button
-            id={item.id}
-            onClick={() => {
-              setUpdateForm(true);
-              setUpdateTitle(item.title);
-              setUpdateContent(item.content);
-            }}
-          >
-            <BsFillPencilFill />
-          </Button>
-        ) : (
-          <Button
-            id={item.id}
-            onClick={() => {
-              updateTodo(item.id);
-            }}
-          >
-            <BsCheckLg />
-          </Button>
-        )}
-
         <Button
           id={item.id}
           onClick={() => {
-            setDeleteConfirm(true)
+            setDeleteConfirm(true);
           }}
         >
           <BsFillTrashFill />
