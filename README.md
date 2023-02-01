@@ -26,6 +26,32 @@
 
 ### :white_square_button: 구현
 
+
+<table>
+<tr>
+<td>구현화면</td>
+<td>코드</td>
+</tr>
+<tr>
+<td><img src="./public/img/game1.gif" width="200"></td>
+<td>
+
+```javascript
+  const idCheck = async () => {
+    setIdCheckButton(true);
+    const FetchId = await getDocs(getUserDoc("users", "email", email));
+    FetchId.forEach((doc) => {
+      if (doc.exists()) {
+        alert("존재하는 아이디입니다.");
+        setIdCheckButton(false);
+      }
+    });
+  };
+```
+</td>
+</tr>
+<table>
+
 #### :one: 회원가입 인증 [아이디 중복확인]
 ##### :pencil2:Register.jsx
 |구현화면|
